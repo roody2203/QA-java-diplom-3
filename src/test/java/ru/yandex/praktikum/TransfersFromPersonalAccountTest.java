@@ -1,54 +1,13 @@
 package ru.yandex.praktikum;
 
-import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.response.ValidatableResponse;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
-import ru.yandex.praktikum.dto.CreateUserRequest;
-import ru.yandex.praktikum.steps.CreateUser;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 
 public class TransfersFromPersonalAccountTest extends BaseWebTest {
-    @Step("Generate random email")
-    public String generateRandomEmail() {
-        return RandomStringUtils.randomAlphabetic(5) + "@yandex.ru";
-    }
-
-    @Step("Generate random valid password")
-    public String generateRandomValidPassword() {
-        return RandomStringUtils.randomAlphabetic(8);
-    }
-
-    @Step("Generate random name")
-    public String generateRandomName() {
-        return RandomStringUtils.randomAlphabetic(6);
-    }
-
-    @Step("Create user by API")
-    public void createUserByAPI(String email, String password, String name) {
-        // Создаем пользователя
-        CreateUser createUser = new CreateUser();
-        CreateUserRequest request = new CreateUserRequest();
-        request.setEmail(email);
-        request.setPassword(password);
-        request.setName(name);
-        ValidatableResponse response = createUser.createUser(request);
-    }
-
-    @Step("Check correct url after click on personal account button without log in")
-    public void checkCorrectConstructorUrl(WebDriver driver) {
-        MatcherAssert.assertThat(driver.getCurrentUrl(), is(EnvConfig.BASE_URL));
-    }
-
-    @Step("Check correct url after log in by log in button")
-    public void checkCorrectProfileUrl(WebDriver driver) {
-        MatcherAssert.assertThat(driver.getCurrentUrl(), is(containsString(EnvConfig.PROFILE_URL)));
-    }
 
     @Test
     @DisplayName("Check transfer to constructor from personal account")
@@ -64,12 +23,12 @@ public class TransfersFromPersonalAccountTest extends BaseWebTest {
         driver.get(EnvConfig.BASE_URL);
 
         // Создаем объект стартовой страницы
-        HomePage homePage = new HomePage(driver);
+        HomePage homePage = new HomePage(driver, driverWaiter);
         // Кликаем по кнопке Войти
         homePage.clickLoginInToAccountButton();
 
         // Создаем объект класса LoginPage
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(driver, driverWaiter);
         // Заполняем все поля
         loginPage.fillPageRegister(email, password);
         // Нажимаем кнопку Войти
@@ -79,11 +38,12 @@ public class TransfersFromPersonalAccountTest extends BaseWebTest {
         homePage.clickPersonalAccountButton();
 
         // Создаем объект класса ProfilePage
-        ProfilePage profilePage = new ProfilePage(driver);
+        ProfilePage profilePage = new ProfilePage(driver, driverWaiter);
         // Нажимаем кнопку Конструктор
         profilePage.clickConstructorButton();
-
+        // Ожидаем перехода на страницу
+        driverWaiter.until(ExpectedConditions.urlContains(EnvConfig.BASE_URL));
         // Проверяем открытие страницы конструктора
-        checkCorrectConstructorUrl(driver);
+        MatcherAssert.assertThat(driver.getCurrentUrl(), is(EnvConfig.BASE_URL));
     }
 }
