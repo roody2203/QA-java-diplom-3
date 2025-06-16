@@ -8,12 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.yandex.praktikum.dto.LoginUserRequest;
 import ru.yandex.praktikum.steps.DeleteUser;
 import ru.yandex.praktikum.steps.LoginUser;
-
-import java.time.Duration;
 
 import static org.hamcrest.CoreMatchers.is;
 

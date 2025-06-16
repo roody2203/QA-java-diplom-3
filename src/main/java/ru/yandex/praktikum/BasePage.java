@@ -5,6 +5,8 @@ import org.hamcrest.MatcherAssert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -25,6 +27,7 @@ public class BasePage
     @Step("Click button and wait")
     public void clickButtonAndWait(By button)
     {
+        driverWaiter.until(ExpectedConditions.elementToBeClickable(button));
         driver.findElement(button).click();
         driverWaiter.until(
                 driver -> ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete"));
@@ -33,5 +36,12 @@ public class BasePage
     @Step("Is visible field")
     public boolean isVisibleField(By field) {
         return driver.findElement(field).isDisplayed();
+    }
+
+    @Step("Is current field")
+    public boolean isCurrentField(By field) {
+        WebElement fieldVision = driverWaiter.until(ExpectedConditions.visibilityOfElementLocated(field));
+        driverWaiter.until(ExpectedConditions.attributeContains(field, "class", "tab_tab_type_current" ));
+        return fieldVision.getAttribute("class").contains("tab_tab_type_current");
     }
 }

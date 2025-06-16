@@ -10,8 +10,8 @@ public class ConstructorWebTest extends  BaseWebTest {
 
 
     @Test
-    @DisplayName("Check transition to bun test")
-    public void checkTransitionToBunTest() {
+    @DisplayName("Check click to bun test")
+    public void checkClickToBunTest() {
 
         // Открыли стартовую страницу
         driver.get(EnvConfig.BASE_URL);
@@ -22,14 +22,13 @@ public class ConstructorWebTest extends  BaseWebTest {
         homePage.clickSaucesButton();
         // Кликаем на кнопку Булки
         homePage.clickBunButton();
-
         // Проверяем видимость поля Булки
-        MatcherAssert.assertThat("Bun field is not visible", homePage.isVisibleBunField(), is(true));
+        MatcherAssert.assertThat("Bun field is not visible", homePage.isCurrentBunField(), is(true));
     }
 
     @Test
-    @DisplayName("Check transition to sauces test")
-    public void checkTransitionToSaucesTest() {
+    @DisplayName("Check click to sauces test")
+    public void checkClickToSaucesTest() {
 
         // Открыли стартовую страницу
         driver.get(EnvConfig.BASE_URL);
@@ -40,12 +39,12 @@ public class ConstructorWebTest extends  BaseWebTest {
         homePage.clickSaucesButton();
 
         // Проверяем видимость поля Соусы
-        MatcherAssert.assertThat("Sauces field is not visible", homePage.isVisibleSaucesField(), is(true));
+        MatcherAssert.assertThat("Sauces field is not visible", homePage.isCurrentSaucesField(), is(true));
     }
 
     @Test
-    @DisplayName("Check transition to toppings test")
-    public void checkTransitionToToppingsTest() {
+    @DisplayName("Check click to toppings test")
+    public void checkClickToToppingsTest() {
 
         // Открыли стартовую страницу
         driver.get(EnvConfig.BASE_URL);
@@ -56,6 +55,6 @@ public class ConstructorWebTest extends  BaseWebTest {
         homePage.clickToppingsButton();
 
         // Проверяем видимость поля Начинки
-        MatcherAssert.assertThat("Toppings field is not visible", homePage.isVisibleToppingsField(), is(true));
+        MatcherAssert.assertThat("Toppings field is not visible", homePage.isCurrentToppingsField(), is(true));
     }
 }

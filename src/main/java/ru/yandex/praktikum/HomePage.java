@@ -18,11 +18,11 @@ public class HomePage extends BasePage {
     // Локатор кнопки Начинки
     private final By toppingsButton = By.xpath(".//span[text()='Начинки']");
     // Локатор поля Булки
-    private final By bunField = By.xpath(".//ul[1]");
+    private final By bunField = By.xpath(".//div[span[text()='Булки']]");
     // Локатор поля Соусы
-    private final By saucesField = By.xpath(".//ul[2]");
+    private final By saucesField = By.xpath(".//div[span[text()='Соусы']]");
     // Локатор поля Начинки
-    private final By toppingsField = By.xpath(".//ul[3]");
+    private final By toppingsField = By.xpath(".//div[span[text()='Начинки']]");
 
     public HomePage(WebDriver driver, WebDriverWait driverWaiter) {
         super(driver, driverWaiter);
@@ -58,18 +58,18 @@ public class HomePage extends BasePage {
         clickButtonAndWait(toppingsButton);
     }
 
-    @Step("Is visible bun field")
-    public boolean isVisibleBunField() {
-        return isVisibleField(bunField);
+    @Step("Is current bun field")
+    public boolean isCurrentBunField() {
+        return isCurrentField(bunField);
     }
 
-    @Step("Check visible sauces field")
-    public boolean isVisibleSaucesField() {
-        return isVisibleField(saucesField);
+    @Step("Is current sauces field")
+    public boolean isCurrentSaucesField() {
+        return isCurrentField(saucesField);
     }
 
-    @Step("Check visible toppings field")
-    public boolean isVisibleToppingsField() {
-        return isVisibleField(toppingsField);
+    @Step("Is current toppings field")
+    public boolean isCurrentToppingsField() {
+        return isCurrentField(toppingsField);
     }
 }
