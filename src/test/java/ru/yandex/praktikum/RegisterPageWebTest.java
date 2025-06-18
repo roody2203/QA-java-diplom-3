@@ -2,13 +2,14 @@ package ru.yandex.praktikum;
 
 import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
+import io.restassured.response.ValidatableResponse;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
+import ru.yandex.praktikum.dto.LoginUserRequest;
+import ru.yandex.praktikum.steps.DeleteUser;
+import ru.yandex.praktikum.steps.LoginUser;
 
 import static org.hamcrest.CoreMatchers.is;
 
@@ -20,6 +21,7 @@ public class RegisterPageWebTest extends BaseWebTest {
     public String generateRandomInvalidPassword() {
         return RandomStringUtils.randomAlphabetic(4);
     }
+
 
     @Test
     @DisplayName("Check successful registration on register page")
@@ -48,6 +50,8 @@ public class RegisterPageWebTest extends BaseWebTest {
         driverWaiter.until(ExpectedConditions.urlContains(EnvConfig.REGISTER_URL));
         // Проверяем переход на страницу Входа после нажатия на кнопку Зарегистрироваться
         MatcherAssert.assertThat("Некорректный url", driver.getCurrentUrl(), is(EnvConfig.REGISTER_URL));
+
+        deleteUserByAPI(email, password);
     }
 
     @Test

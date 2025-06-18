@@ -1,10 +1,15 @@
 package ru.yandex.praktikum;
 
 import io.qameta.allure.junit4.DisplayName;
+import io.restassured.response.ValidatableResponse;
 import org.hamcrest.MatcherAssert;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import ru.yandex.praktikum.dto.LoginUserRequest;
+import ru.yandex.praktikum.steps.DeleteUser;
+import ru.yandex.praktikum.steps.LoginUser;
 
 import static org.hamcrest.CoreMatchers.is;
 
@@ -17,8 +22,19 @@ public class LogOutFromAccountTest extends  BaseWebTest {
     @Before
     public void init() throws Exception {
         super.init();
+
         // Создаем пользователя со сгенерированными данными через API
         createUserByAPI(email, password, name);
+    }
+
+    @Override
+    @After
+    public void teardown()
+    {
+        // Удаляем созданного пользователя
+        deleteUserByAPI(email, password);
+
+        super.teardown();
     }
 
     @Test

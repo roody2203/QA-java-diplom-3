@@ -11,13 +11,19 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.yandex.praktikum.dto.CreateUserRequest;
+import ru.yandex.praktikum.dto.LoginUserRequest;
 import ru.yandex.praktikum.steps.CreateUser;
+import ru.yandex.praktikum.steps.DeleteUser;
+import ru.yandex.praktikum.steps.LoginUser;
 
 import java.time.Duration;
 
 public class BaseWebTest {
     protected WebDriver driver;
     protected WebDriverWait driverWaiter;
+
+    private LoginUser loginUser = new LoginUser();
+    private DeleteUser deleteUser = new DeleteUser();
 
     @Before
     public void init() throws Exception {
@@ -80,5 +86,16 @@ public class BaseWebTest {
         request.setPassword(password);
         request.setName(name);
         ValidatableResponse response = createUser.createUser(request);
+    }
+
+    @Step("Delete user by API")
+    public void deleteUserByAPI(String email, String password) {
+        // Удаляем созданного пользователя
+        LoginUserRequest request = new LoginUserRequest();
+        request.setEmail(email);
+        request.setPassword(password);
+        ValidatableResponse response = loginUser.loginUser(request);
+        String accessToken = response.extract().path("accessToken");
+        deleteUser.deleteUser(accessToken);
     }
 }

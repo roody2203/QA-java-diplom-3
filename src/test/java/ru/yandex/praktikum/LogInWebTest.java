@@ -18,9 +18,6 @@ public class LogInWebTest extends BaseWebTest {
     private String email;//создаем поле логин
     private String password;//создаем поле пароль
 
-    private LoginUser loginUser;
-    private DeleteUser deleteUser;
-
     @Override
     @Before
     public void init() throws Exception {
@@ -32,9 +29,6 @@ public class LogInWebTest extends BaseWebTest {
 
         // Создаем пользователя со сгенерированными данными через API
         createUserByAPI(email, password, name);
-
-        loginUser = new LoginUser();
-        deleteUser = new DeleteUser();
     }
 
     public void checkLogInHomePage(WebDriver driver, boolean useLogInButton, String url) {
@@ -151,12 +145,7 @@ public class LogInWebTest extends BaseWebTest {
     public void teardown()
     {
         // Удаляем созданного пользователя
-        LoginUserRequest request = new LoginUserRequest();
-        request.setEmail(email);
-        request.setPassword(password);
-        ValidatableResponse response = loginUser.loginUser(request);
-        String accessToken = response.extract().path("accessToken");
-        deleteUser.deleteUser(accessToken);
+        deleteUserByAPI(email, password);
 
         super.teardown();
     }
